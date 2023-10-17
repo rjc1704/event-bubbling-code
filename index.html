@@ -11,6 +11,13 @@
             box-sizing: border-box;
         }
 
+        #super-parent {
+            padding: 30px;
+            background-color: rgb(255, 115, 0);
+            text-align: center;
+            cursor: pointer;
+        }
+
         #grand-parent {
             padding: 30px;
             background-color: aqua;
@@ -41,18 +48,25 @@
 </head>
 
 <body>
-    <div id="grand-parent">
-        Grand Parent
-        <div id="parent">
-            Parent
-            <p id="child">Child</p>
+    <div id="super-parent">
+        Super Parent
+        <div id="grand-parent">
+            Grand Parent
+            <div id="parent">
+                Parent
+                <p id="child">Child</p>
+            </div>
         </div>
     </div>
     <script>
+        const superParent = document.querySelector("#super-parent");
         const grandParent = document.querySelector("#grand-parent");
         const parent = document.querySelector("#parent");
         const child = document.querySelector("#child");
 
+        superParent.addEventListener("click", () => {
+            console.log("SuperParent clicked!");
+        });
         grandParent.addEventListener("click", () => {
             console.log("GrandParent clicked!");
         });
