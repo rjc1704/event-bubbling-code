@@ -1,83 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>이벤트 버블링</title>
     <style>
-        * {
-            box-sizing: border-box;
-        }
+      * {
+        box-sizing: border-box;
+      }
 
-        #super-parent {
-            padding: 30px;
-            background-color: rgb(255, 115, 0);
-            text-align: center;
-            cursor: pointer;
-        }
+      #super-parent {
+        padding: 30px;
+        background-color: rgb(255, 115, 0);
+        text-align: center;
+        cursor: pointer;
+      }
 
-        #grand-parent {
-            padding: 30px;
-            background-color: aqua;
-            text-align: center;
-            cursor: pointer;
-        }
+      #grand-parent {
+        padding: 30px;
+        background-color: aqua;
+        text-align: center;
+        cursor: pointer;
+      }
 
-        #parent {
-            padding: 30px;
-            background-color: chartreuse;
-            text-align: center;
-            cursor: pointer;
-        }
+      #parent {
+        padding: 30px;
+        background-color: chartreuse;
+        text-align: center;
+        cursor: pointer;
+      }
 
-        #child {
-            padding: 30px;
-            background-color: beige;
-            cursor: pointer;
-            text-align: center;
-        }
+      #child {
+        padding: 30px;
+        background-color: beige;
+        cursor: pointer;
+        text-align: center;
+      }
 
-        p,
-        div {
-            font-size: 30px;
-            font-weight: 900;
-        }
+      p,
+      div {
+        font-size: 30px;
+        font-weight: 900;
+      }
     </style>
-</head>
+  </head>
 
-<body>
+  <body>
     <div id="super-parent">
-        Super Parent
-        <div id="grand-parent">
-            Grand Parent
-            <div id="parent">
-                Parent
-                <p id="child">Child</p>
-            </div>
+      Super Parent
+      <div id="grand-parent">
+        Grand Parent
+        <div id="parent">
+          Parent
+          <p id="child">Child</p>
         </div>
+      </div>
     </div>
     <script>
-        const superParent = document.querySelector("#super-parent");
-        const grandParent = document.querySelector("#grand-parent");
-        const parent = document.querySelector("#parent");
-        const child = document.querySelector("#child");
+      const superParent = document.querySelector("#super-parent");
+      const grandParent = document.querySelector("#grand-parent");
+      const parent = document.querySelector("#parent");
+      const child = document.querySelector("#child");
 
-        superParent.addEventListener("click", () => {
-            console.log("SuperParent clicked!");
-        });
-        grandParent.addEventListener("click", () => {
-            console.log("GrandParent clicked!");
-        });
-        parent.addEventListener("click", () => {
-            console.log("Parent clicked!");
-        });
-        child.addEventListener("click", () => {
-            console.log("Child clicked!");
-        });
-
+      superParent.addEventListener("click", (e) => {
+        console.log("SuperParent clicked!");
+      });
+      grandParent.addEventListener("click", (e) => {
+        console.log("GrandParent clicked!");
+      });
+      parent.addEventListener("click", (e) => {
+        console.log("Parent clicked!");
+      });
+      child.addEventListener("click", (e) => {
+        console.log("Child clicked!");
+      });
     </script>
-</body>
-
+  </body>
 </html>

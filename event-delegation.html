@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>간단한 이벤트 위임 예제</title>
+    <style>
+      body {
+        font-family: "Segoe UI", sans-serif;
+        max-width: 500px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      h1 {
+        text-align: center;
+      }
+
+      .todo-list {
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        padding: 10px;
+      }
+
+      .todo-item {
+        padding: 10px;
+        border-bottom: 1px solid #eee;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .delete-btn {
+        background-color: #ff6b6b;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 5px 10px;
+        cursor: pointer;
+      }
+
+      .add-btn {
+        display: block;
+        margin: 20px auto;
+        padding: 8px 16px;
+        background-color: #4dabf7;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .explanation {
+        background-color: #f8f9fa;
+        padding: 15px;
+        margin-top: 20px;
+        border-radius: 4px;
+        border-left: 4px solid #4dabf7;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>할 일 목록</h1>
+
+    <button id="add-todo" class="add-btn">할 일 추가</button>
+
+    <ul id="todo-list" class="todo-list">
+      <li class="todo-item">
+        <span class="todo-text">JavaScript 공부하기</span>
+        <button class="delete-btn">삭제</button>
+      </li>
+      <li class="todo-item">
+        <span class="todo-text">이벤트 위임 이해하기</span>
+        <button class="delete-btn">삭제</button>
+      </li>
+      <li class="todo-item">
+        <span class="todo-text">React 예제 만들기</span>
+        <button class="delete-btn">삭제</button>
+      </li>
+    </ul>
+
+    <div class="explanation">
+      <h3>이벤트 위임(Event Delegation) 설명</h3>
+      <p>위 예제는 이벤트 위임의 기본 원리를 보여줍니다:</p>
+      <ol>
+        <li>
+          <strong>하나의 이벤트 리스너</strong>: 각 할 일 항목이나 삭제 버튼마다
+          리스너를 추가하지 않고, 부모 요소인 <code>todo-list</code>에 하나만
+          추가합니다.
+        </li>
+        <li>
+          <strong>이벤트 버블링 활용</strong>: 클릭 이벤트는 자식 요소에서
+          부모로 버블링됩니다.
+        </li>
+        <li>
+          <strong>동적 요소 처리</strong>: 새로운 할 일을 추가해도 별도의 이벤트
+          리스너가 필요 없습니다.
+        </li>
+      </ol>
+    </div>
+
+    <script>
+      // DOM 요소
+      const todoList = document.getElementById("todo-list");
+      const addTodoBtn = document.getElementById("add-todo");
+
+      // 할 일 카운터
+      let todoCount = 4;
+
+      // 이벤트 위임의 핵심! - 부모 요소 하나에만 이벤트 리스너 추가
+      todoList.addEventListener("click", function (event) {
+        // 클릭된 요소가 삭제 버튼인지 확인
+        if (event.target.className === "delete-btn") {
+          // 버튼의 부모 요소(할 일 항목) 찾아서 제거
+          const todoItem = event.target.parentElement;
+          todoList.removeChild(todoItem);
+        }
+      });
+
+      // 새 할 일 추가
+      addTodoBtn.addEventListener("click", function () {
+        const newTodo = document.createElement("li");
+        newTodo.className = "todo-item";
+        newTodo.innerHTML = `
+                <span class="todo-text">할 일 ${todoCount++}</span>
+                <button class="delete-btn">삭제</button>
+            `;
+        // newTodo.addEventListener("click", function (event) {
+        //   if (event.target.className === "delete-btn") {
+        //     todoList.removeChild(event.target.parentElement);
+        //   }
+        // });
+        todoList.appendChild(newTodo);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>이벤트 버블링으로 모달 닫기</title>
+    <style>
+      body {
+        font-family: "Pretendard", sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #f0f2f5;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        text-align: center;
+        width: 100%;
+        max-width: 600px;
+      }
+
+      button {
+        background-color: #4361ee;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        font-size: 16px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: #3a56d4;
+      }
+
+      /* 모달 배경 - 화면 전체를 덮음 */
+      .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        visibility: hidden;
+        opacity: 0;
+        transition: visibility 0s linear 0.25s, opacity 0.25s;
+      }
+
+      /* 모달이 보이는 상태 */
+      .modal-overlay.show {
+        visibility: visible;
+        opacity: 1;
+        transition-delay: 0s;
+      }
+
+      /* 모달 콘텐츠 */
+      .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        width: 80%;
+        max-width: 500px;
+      }
+
+      .modal-header {
+        margin-bottom: 20px;
+      }
+
+      .modal-title {
+        margin: 0;
+        color: #333;
+      }
+
+      .modal-body {
+        margin-bottom: 25px;
+        line-height: 1.6;
+      }
+
+      .explanation {
+        margin-top: 40px;
+        background-color: #e9ecef;
+        padding: 20px;
+        border-radius: 8px;
+        text-align: left;
+      }
+
+      code {
+        background-color: #f1f3f5;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: monospace;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>이벤트 버블링을 이용한 모달 닫기</h1>
+      <p>모달 바깥 영역을 클릭하면 모달이 닫히는 예제입니다.</p>
+      <button id="open-modal-btn">모달 열기</button>
+
+      <div class="explanation">
+        <h3>📌 이벤트 버블링을 활용한 모달 닫기 설명</h3>
+        <p>
+          이 예제에서는 이벤트 버블링의 특성을 활용하여 모달을 효과적으로 닫는
+          방법을 보여줍니다:
+        </p>
+        <ol>
+          <li>모달 오버레이에 클릭 이벤트 리스너를 추가합니다.</li>
+          <li>
+            사용자가 모달 콘텐츠 바깥(오버레이)을 클릭하면 이벤트가 발생합니다.
+          </li>
+          <li>
+            모달 콘텐츠를 클릭했을 때는 <code>event.target</code>과
+            <code>event.currentTarget</code>이 다릅니다.
+          </li>
+          <li>
+            오버레이 자체를 클릭했을 때만 <code>target</code>과
+            <code>currentTarget</code>이 같아집니다.
+          </li>
+          <li>
+            이를 활용해 모달 콘텐츠가 아닌 오버레이를 클릭했을 때만 모달을
+            닫습니다.
+          </li>
+        </ol>
+      </div>
+    </div>
+
+    <!-- 모달 오버레이 (배경) -->
+    <div id="modal-overlay" class="modal-overlay">
+      <!-- 모달 콘텐츠 -->
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">모달 제목</h2>
+        </div>
+        <div class="modal-body">
+          <p>이 모달 밖의 어두운 영역을 클릭하면 모달이 닫힙니다.</p>
+          <p>이벤트 버블링 원리를 이용하여 구현했습니다.</p>
+          <p>모달 내부를 클릭해도 닫히지 않습니다.</p>
+        </div>
+        <button id="close-modal-btn">닫기</button>
+      </div>
+    </div>
+
+    <script>
+      // DOM 요소 가져오기
+      const modalOverlay = document.getElementById("modal-overlay");
+      const openModalBtn = document.getElementById("open-modal-btn");
+      const closeModalBtn = document.getElementById("close-modal-btn");
+
+      // 모달 열기
+      openModalBtn.addEventListener("click", function () {
+        modalOverlay.classList.add("show");
+      });
+
+      // 모달 닫기 (닫기 버튼)
+      closeModalBtn.addEventListener("click", function () {
+        modalOverlay.classList.remove("show");
+      });
+
+      // 이벤트 버블링을 활용한 모달 닫기
+      // 오버레이에 이벤트 리스너 한 개만 추가
+      modalOverlay.addEventListener("click", function (event) {
+        // event.target: 실제 클릭된 요소
+        // event.currentTarget: 이벤트 리스너가 연결된 요소 (오버레이)
+
+        // 클릭된 요소가 오버레이 자체인 경우에만 모달 닫기
+        // 즉, 모달 콘텐츠를 클릭한 경우는 무시함
+        if (event.target === event.currentTarget) {
+          modalOverlay.classList.remove("show");
+        }
+      });
+    </script>
+  </body>
+</html>
